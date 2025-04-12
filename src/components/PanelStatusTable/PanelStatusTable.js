@@ -3,6 +3,32 @@ import {Button, Checkbox, Icon, Table} from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import './PanelStatusTable.css';
 
+import WeatherSection from '../WeatherSection/WeatherSection';
+
+const WeatherFormSection = () => {
+  return (
+    <div style={{ marginTop: '20px', padding: '15px', backgroundColor: '#f9f9f9', border: '1px solid #ddd', borderRadius: '5px' }}>
+      <h3 style={{ marginBottom: '10px', fontSize: '1.5em' }}>
+        <Icon name="cloud" color="blue" /> Weather Information
+      </h3>
+      <form>
+        <div style={{ marginBottom: '10px' }}>
+          <label style={{ fontSize: '1.1em', marginRight: '10px' }}>City:</label>
+          <input type="text" placeholder="Enter city name" style={{ padding: '5px', fontSize: '1em' }} />
+        </div>
+        <Button color="blue" onClick={() => alert('Fetching weather data...')}>
+          Get Weather
+        </Button>
+      </form>
+      <div style={{ marginTop: '20px' }}>
+        <p style={{ fontSize: '1.1em' }}>Temperature: 25°C</p>
+        <p style={{ fontSize: '1.1em' }}>Humidity: 60%</p>
+        <p style={{ fontSize: '1.1em' }}>Wind Speed: 15 km/h</p>
+      </div>
+    </div>
+  );
+};
+
 class PanelStatusTable extends Component {
   handleCheckboxChange(event, data) {
     const checkboxMarked = data.checked,
@@ -87,17 +113,40 @@ class PanelStatusTable extends Component {
 
                 <Button size='small' color='green' icon labelPosition='left' floated='right'
                         onClick={PanelStatusTable.forkOnGitHub}>
-                  <Icon name='fork'/> Fork on GitHub
+                  <Icon name='fork'/> Weekly Power Report
                 </Button>
               </Table.HeaderCell>
             </Table.Row>
           </Table.Footer>
 
-        </Table>
+      </Table>
 
+
+    <div style={{ marginTop: '20px', padding: '15px', backgroundColor: '#f9f9f9', border: '1px solid #ddd', borderRadius: '5px' }}>
+      <h3 style={{ marginBottom: '10px', fontSize: '1.5em' }}>
+        <Icon name="cloud" color="blue" /> Weather Information
+      </h3>
+      <form>
+        <div style={{ marginBottom: '10px' }}>
+          <label style={{ fontSize: '1.1em', marginRight: '10px' }}>City:</label>
+          <input type="text" placeholder="Enter city name" style={{ padding: '5px', fontSize: '1em' }} />
+        </div>
+        <Button color="blue" onClick={() => alert('Fetching weather data...')}>
+          Get Weather
+        </Button>
+      </form>
+      <div style={{ marginTop: '20px' }}>
+        <p style={{ fontSize: '1.1em' }}>Temperature: 25°C</p>
+        <p style={{ fontSize: '1.1em' }}>Humidity: 60%</p>
+        <p style={{ fontSize: '1.1em' }}>Wind Speed: 15 km/h</p>
       </div>
-    );
-  }
+    </div>
+
+      <WeatherSection />
+      <WeatherFormSection />
+    </div>
+  );
+}
 }
 
 PanelStatusTable.propTypes = {

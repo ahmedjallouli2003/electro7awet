@@ -41,7 +41,7 @@ class HorizontalNavBar extends Component {
 
       // Update the component's state using the name data in the object.
       this.setState({
-        userName: `${object.data.first_name} ${object.data.last_name}`
+        userName: `Ahmed & Abdallah`
       });
 
     }).catch((error) => {
@@ -60,11 +60,12 @@ class HorizontalNavBar extends Component {
                      className='hidden-on-small-monitor hidden-on-large-monitor'/>
 
           <Menu.Item as='a' onClick={onClickLink} header>
-            <Icon name='sun' color='yellow'/> MySolarSystem
+            <Icon name='sun' color='yellow'/> Electro_7awet
           </Menu.Item>
           <Menu.Item as='a' className='hidden-on-tablet hidden-on-phone' active>Overview</Menu.Item>
           <Menu.Item as='a' onClick={onClickLink} className='hidden-on-tablet hidden-on-phone'>Solar Panels</Menu.Item>
-          <Menu.Item as='a' onClick={onClickLink} className='hidden-on-tablet hidden-on-phone'>Inverters</Menu.Item>
+          <Menu.Item as='a' onClick={onClickLink} className='hidden-on-tablet hidden-on-phone'>Wind Turbines</Menu.Item>
+          <Menu.Item as='a' onClick={onClickLink} className='hidden-on-tablet hidden-on-phone'>Water Turbines</Menu.Item>
           <Menu.Item as='a' onClick={onClickLink} className='hidden-on-tablet hidden-on-phone'>Batteries</Menu.Item>
 
           <Menu.Menu position='right' className='hidden-on-tablet hidden-on-phone'>
