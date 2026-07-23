@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#071a2f" />
+  <meta name="description" content="Dhawna TN — plateforme citoyenne intelligente de suivi des coupures électriques en Tunisie." />
+  <title>Dhawna TN — Suivi intelligent des coupures</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="preconnect" href="https://unpkg.com" />
+  <link rel="preconnect" href="https://tile.openstreetmap.org" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIINfQ3ynhFQjMZpRLJH/znPZzCtkxj6Ucw=" crossorigin="" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <noscript>Cette application nécessite JavaScript.</noscript>
+  <header class="topbar">
+    <a class="brand" href="#" aria-label="Accueil Dhawna TN"><span class="brand-mark" aria-hidden="true">⚡</span><span><strong>Dhawna TN</strong><small>Électricité en temps réel</small></span></a>
+    <nav class="desktop-nav" aria-label="Navigation principale"><button class="nav-link active" data-view="map-view">Carte</button><button class="nav-link" data-view="history-view">Historique</button><button class="nav-link" data-view="dashboard-view">Tableau de bord</button></nav>
+    <div class="top-actions"><span class="live-indicator"><i></i> En direct</span><button id="theme-toggle" class="icon-button" aria-label="Changer le thème">☾</button><button class="primary-button compact" data-open-report>Signaler</button></div>
+  </header>
+  <main>
+    <section class="hero-panel"><div><div class="eyebrow">Plateforme citoyenne indépendante</div><h1>Où est-ce que le courant est coupé&nbsp;?</h1><p>Signalements citoyens, capteurs et annonces vérifiées réunis dans une seule carte transparente.</p></div><div class="hero-meta"><span>Dernière actualisation</span><strong id="last-update">—</strong></div></section>
+    <section class="stats-grid" aria-label="Statistiques principales">
+      <article class="stat-card danger"><div class="stat-icon">!</div><div><span>Incidents actifs</span><strong id="active-incidents">0</strong></div></article>
+      <article class="stat-card warning"><div class="stat-icon">⌁</div><div><span>Zones surveillées</span><strong id="watched-zones">0</strong></div></article>
+      <article class="stat-card success"><div class="stat-icon">✓</div><div><span>Courant confirmé</span><strong id="powered-zones">0</strong></div></article>
+      <article class="stat-card info"><div class="stat-icon">◎</div><div><span>Signalements aujourd'hui</span><strong id="reports-today">0</strong></div></article>
+    </section>
+    <section id="map-view" class="app-view active"><div class="workspace-grid">
+      <aside class="sidebar card"><div class="section-heading"><div><span class="eyebrow">Incidents récents</span><h2>Zones suivies</h2></div><button id="locate-button" class="icon-button" title="Me localiser" aria-label="Me localiser">⌖</button></div>
+        <div class="filters"><label><span>Gouvernorat</span><select id="governorate-filter"><option value="all">Toute la Tunisie</option></select></label><label><span>Statut</span><select id="status-filter"><option value="all">Tous les statuts</option><option value="confirmed">Coupure confirmée</option><option value="probable">Coupure probable</option><option value="official">Annonce officielle</option><option value="restored">Courant rétabli</option></select></label></div>
+        <div id="incident-list" class="incident-list" aria-live="polite"></div>
+      </aside>
+      <div class="map-shell card"><div id="map" role="application" aria-label="Carte des coupures en Tunisie"></div><div id="map-fallback" class="map-fallback" hidden><strong>La carte ne peut pas être chargée.</strong><span>Vérifie la connexion internet. Les incidents restent consultables dans la liste.</span></div><div class="map-legend"><span><i class="legend-dot official"></i> Officielle</span><span><i class="legend-dot confirmed"></i> Confirmée</span><span><i class="legend-dot probable"></i> Probable</span><span><i class="legend-dot restored"></i> Rétablie</span></div><button class="floating-report" data-open-report><span>＋</span> Signaler une situation</button></div>
+    </div></section>
+    <section id="history-view" class="app-view"><div class="card section-card"><div class="section-heading"><div><span class="eyebrow">Traçabilité</span><h2>Historique des incidents</h2></div><button id="export-button" class="secondary-button">Exporter CSV</button></div><div class="table-wrap"><table><thead><tr><th>Zone</th><th>Statut</th><th>Début</th><th>Durée</th><th>Confiance</th><th>Sources</th></tr></thead><tbody id="history-table"></tbody></table></div></div></section>
+    <section id="dashboard-view" class="app-view"><div class="dashboard-grid"><article class="card section-card wide"><span class="eyebrow">Analyse territoriale</span><h2>Fiabilité électrique par gouvernorat</h2><div id="reliability-bars" class="reliability-bars"></div></article><article class="card section-card"><span class="eyebrow">Qualité des données</span><h2>Sources actives</h2><div class="source-grid"><div><strong id="citizen-source-count">0</strong><span>Citoyens</span></div><div><strong id="sensor-source-count">0</strong><span>Capteurs</span></div><div><strong id="official-source-count">0</strong><span>Officielles</span></div></div></article><article class="card section-card"><span class="eyebrow">Méthode</span><h2>Score de confiance</h2><p class="muted">Le score combine le nombre de citoyens distincts, la proximité des signalements, les capteurs disponibles et les annonces officielles.</p><div class="formula">Citoyens 45% · Capteurs 35% · Source officielle 20%</div></article></div></section>
+  </main>
+  <nav class="mobile-nav" aria-label="Navigation mobile"><button class="nav-link active" data-view="map-view"><span>⌖</span>Carte</button><button class="nav-link" data-view="history-view"><span>↻</span>Historique</button><button class="nav-link" data-view="dashboard-view"><span>▥</span>Analyse</button></nav>
+  <dialog id="report-dialog"><form id="report-form" method="dialog"><div class="dialog-header"><div><span class="eyebrow">Nouveau signalement</span><h2>Que se passe-t-il dans votre zone&nbsp;?</h2></div><button type="button" class="icon-button" data-close-report aria-label="Fermer">×</button></div>
+    <div class="status-options" role="radiogroup" aria-label="Type de signalement"><label class="status-option outage"><input type="radio" name="report-status" value="outage" required /><span>⚡</span><strong>Coupure</strong><small>Plus de courant</small></label><label class="status-option powered"><input type="radio" name="report-status" value="powered" required /><span>✓</span><strong>Courant présent</strong><small>Tout fonctionne</small></label><label class="status-option restored"><input type="radio" name="report-status" value="restored" required /><span>↻</span><strong>Courant revenu</strong><small>Rétablissement</small></label><label class="status-option unstable"><input type="radio" name="report-status" value="unstable" required /><span>⌁</span><strong>Tension instable</strong><small>Baisses ou microcoupures</small></label></div>
+    <div class="form-grid"><label><span>Gouvernorat</span><select id="report-governorate" required></select></label><label><span>Ville / quartier</span><input id="report-zone" maxlength="80" placeholder="Ex. Sakiet Ezzit" required /></label><label class="full"><span>Commentaire facultatif</span><textarea id="report-note" maxlength="240" rows="3" placeholder="Ex. coupure depuis environ 20 minutes"></textarea></label></div><div class="privacy-note">🔒 La position exacte n'est jamais publiée. Le prototype enregistre les données uniquement dans ce navigateur.</div><div class="dialog-actions"><button type="button" class="secondary-button" data-close-report>Annuler</button><button type="submit" class="primary-button">Envoyer le signalement</button></div></form></dialog>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script><script src="app.js"></script>
+</body></html>
